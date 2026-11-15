@@ -1,1 +1,471 @@
+name: Build APK TV
+on:
+  push:
+  workflow_dispatch:
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.9
+      - name: Tulis source project
+        run: |
+          rm -rf app
+          mkdir -p app
+          echo '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' | base64 -d > app/ks.jks
+          mkdir -p $(dirname settings.gradle.kts)
+          cat > settings.gradle.kts <<'EOF_SRC'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+          rootProject.name = "DotLauncher"
+          include(":app")
+          EOF_SRC
+          mkdir -p $(dirname build.gradle.kts)
+          cat > build.gradle.kts <<'EOF_SRC'
+          plugins {
+              id("com.android.application") version "8.5.2" apply false
+              id("org.jetbrains.kotlin.android") version "1.9.24" apply false
+          }
+          EOF_SRC
+          mkdir -p $(dirname gradle.properties)
+          cat > gradle.properties <<'EOF_SRC'
+          org.gradle.jvmargs=-Xmx2g
+          android.useAndroidX=false
+          kotlin.code.style=official
+          EOF_SRC
+          mkdir -p $(dirname app/build.gradle.kts)
+          cat > app/build.gradle.kts <<'EOF_SRC'
+          plugins {
+              id("com.android.application")
+              id("org.jetbrains.kotlin.android")
+          }
+          android {
+              namespace = "id.launcher.dot"
+              compileSdk = 34
+              defaultConfig {
+                  applicationId = "id.launcher.dot"
+                  minSdk = 21
+                  targetSdk = 29
+                  versionCode = 1
+                  versionName = "1.0"
+              }
+              signingConfigs {
+                  create("rel") {
+                      storeFile = file("ks.jks")
+                      storePassword = "android"
+                      keyAlias = "launcher"
+                      keyPassword = "android"
+                  }
+              }
+              buildTypes {
+                  release {
+                      isMinifyEnabled = true
+                      isShrinkResources = true
+                      signingConfig = signingConfigs.getByName("rel")
+                      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+                  }
+              }
+              compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+              kotlinOptions { jvmTarget = "17" }
+              lint {
+                  checkReleaseBuilds = false
+                  abortOnError = false
+              }
+          }
+          EOF_SRC
+          mkdir -p $(dirname app/src/main/AndroidManifest.xml)
+          cat > app/src/main/AndroidManifest.xml <<'EOF_SRC'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-feature android:name="android.software.leanback" android:required="false" />
+              <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+              <application
+                  android:label="Dot Launcher"
+                  android:allowBackup="false"
+                  android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:launchMode="singleTask"
+                      android:screenOrientation="landscape"
+                      android:stateNotNeeded="true"
+                      android:excludeFromRecents="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.HOME" />
+                          <category android:name="android.intent.category.DEFAULT" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF_SRC
+          mkdir -p $(dirname app/src/main/java/id/launcher/dot/MainActivity.kt)
+          cat > app/src/main/java/id/launcher/dot/MainActivity.kt <<'EOF_SRC'
+          package id.launcher.dot
+
+          import android.app.Activity
+          import android.app.ActivityManager
+          import android.content.BroadcastReceiver
+          import android.content.ComponentName
+          import android.content.Context
+          import android.content.Intent
+          import android.content.IntentFilter
+          import android.graphics.Canvas
+          import android.graphics.Color
+          import android.graphics.ColorMatrix
+          import android.graphics.ColorMatrixColorFilter
+          import android.graphics.Paint
+          import android.graphics.Typeface
+          import android.graphics.drawable.Drawable
+          import android.graphics.drawable.GradientDrawable
+          import android.net.Uri
+          import android.os.Bundle
+          import android.os.Handler
+          import android.os.Looper
+          import android.provider.Settings
+          import android.text.TextUtils
+          import android.view.Gravity
+          import android.view.View
+          import android.view.ViewGroup
+          import android.widget.BaseAdapter
+          import android.widget.GridView
+          import android.widget.ImageView
+          import android.widget.LinearLayout
+          import android.widget.TextView
+          import android.widget.Toast
+          import java.text.SimpleDateFormat
+          import java.util.Calendar
+          import java.util.Locale
+
+          private const val RED = "#D71921"
+
+          private class AppItem(val label: String, val icon: Drawable, val intent: Intent, val pkg: String?)
+
+          /** Jam gaya dot-matrix 5x7 yang digambar langsung, tanpa font tambahan. */
+          private class DotClockView(ctx: Context, private val cell: Int) : View(ctx) {
+              private var digits = "0000"
+              private val on = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
+              private val red = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor(RED) }
+              private val off = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#1F1F1F") }
+
+              fun setTime(h: Int, m: Int) {
+                  digits = String.format(Locale.US, "%02d%02d", h, m)
+                  invalidate()
+              }
+
+              override fun onMeasure(w: Int, h: Int) = setMeasuredDimension(cell * COLS, cell * 7)
+
+              override fun onDraw(c: Canvas) {
+                  val r = cell * 0.36f
+                  var col = 0
+                  for (i in 0 until 4) {
+                      if (i == 2) {
+                          glyph(c, COLON, col, red, r)
+                          col += 2
+                      }
+                      glyph(c, FONT[digits[i] - '0'], col, on, r)
+                      col += 6
+                  }
+              }
+
+              private fun glyph(c: Canvas, rows: Array<String>, col: Int, lit: Paint, r: Float) {
+                  for (row in 0 until 7) {
+                      for (x in rows[row].indices) {
+                          val cx = (col + x + 0.5f) * cell
+                          val cy = (row + 0.5f) * cell
+                          c.drawCircle(cx, cy, r, if (rows[row][x] == '1') lit else off)
+                      }
+                  }
+              }
+
+              companion object {
+                  const val COLS = 25
+                  val COLON = arrayOf("0", "0", "1", "0", "1", "0", "0")
+                  val FONT = arrayOf(
+                      arrayOf("01110", "10001", "10011", "10101", "11001", "10001", "01110"),
+                      arrayOf("00100", "01100", "00100", "00100", "00100", "00100", "01110"),
+                      arrayOf("01110", "10001", "00001", "00010", "00100", "01000", "11111"),
+                      arrayOf("11110", "00001", "00001", "01110", "00001", "00001", "11110"),
+                      arrayOf("00010", "00110", "01010", "10010", "11111", "00010", "00010"),
+                      arrayOf("11111", "10000", "11110", "00001", "00001", "10001", "01110"),
+                      arrayOf("00110", "01000", "10000", "11110", "10001", "10001", "01110"),
+                      arrayOf("11111", "00001", "00010", "00100", "01000", "01000", "01000"),
+                      arrayOf("01110", "10001", "10001", "01110", "10001", "10001", "01110"),
+                      arrayOf("01110", "10001", "10001", "01111", "00001", "00010", "01100")
+                  )
+              }
+          }
+
+          class MainActivity : Activity() {
+
+              private val apps = ArrayList<AppItem>()
+              private val ui = Handler(Looper.getMainLooper())
+              private lateinit var adapter: AppAdapter
+              private lateinit var grid: GridView
+              private lateinit var clock: DotClockView
+              private lateinit var dateTv: TextView
+              private lateinit var ramTv: TextView
+              private var loading = false
+
+              // Ikon dijadikan monokrom (abu-abu terang) supaya seragam
+              private val monoFilter = ColorMatrixColorFilter(ColorMatrix().apply {
+                  setSaturation(0f)
+                  postConcat(
+                      ColorMatrix(
+                          floatArrayOf(
+                              1.15f, 0f, 0f, 0f, 25f,
+                              0f, 1.15f, 0f, 0f, 25f,
+                              0f, 0f, 1.15f, 0f, 25f,
+                              0f, 0f, 0f, 1f, 0f
+                          )
+                      )
+                  )
+              })
+
+              private val pkgReceiver = object : BroadcastReceiver() {
+                  override fun onReceive(c: Context, i: Intent) = loadApps()
+              }
+              private val timeReceiver = object : BroadcastReceiver() {
+                  override fun onReceive(c: Context, i: Intent) = tick()
+              }
+
+              private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+
+              private fun mono(text: String, sp: Float, color: String) = TextView(this).apply {
+                  this.text = text
+                  textSize = sp
+                  typeface = Typeface.MONOSPACE
+                  letterSpacing = 0.1f
+                  setTextColor(Color.parseColor(color))
+              }
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                      View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                      View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
+                  val root = LinearLayout(this).apply {
+                      orientation = LinearLayout.HORIZONTAL
+                      setBackgroundColor(Color.BLACK)
+                      setPadding(dp(56), dp(36), dp(56), dp(28))
+                  }
+
+                  // ---------- Panel kiri ----------
+                  val left = LinearLayout(this).apply {
+                      orientation = LinearLayout.VERTICAL
+                      gravity = Gravity.CENTER_VERTICAL
+                  }
+                  val brand = LinearLayout(this).apply {
+                      orientation = LinearLayout.HORIZONTAL
+                      gravity = Gravity.CENTER_VERTICAL
+                  }
+                  brand.addView(mono("\u25CF", 14f, RED))
+                  brand.addView(mono("  DOT LAUNCHER", 13f, "#8A8A8A"))
+                  left.addView(brand)
+
+                  clock = DotClockView(this, dp(14))
+                  left.addView(clock, LinearLayout.LayoutParams(
+                      ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                  ).apply { topMargin = dp(28) })
+
+                  dateTv = mono("", 20f, "#FFFFFF")
+                  left.addView(dateTv, LinearLayout.LayoutParams(
+                      ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                  ).apply { topMargin = dp(24) })
+
+                  ramTv = mono("", 13f, "#8A8A8A")
+                  left.addView(ramTv, LinearLayout.LayoutParams(
+                      ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                  ).apply { topMargin = dp(8) })
+
+                  root.addView(left, LinearLayout.LayoutParams(dp(400), ViewGroup.LayoutParams.MATCH_PARENT))
+
+                  // ---------- Panel kanan ----------
+                  val right = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+
+                  adapter = AppAdapter()
+                  grid = GridView(this).apply {
+                      numColumns = GridView.AUTO_FIT
+                      columnWidth = dp(120)
+                      stretchMode = GridView.STRETCH_COLUMN_WIDTH
+                      horizontalSpacing = dp(8)
+                      verticalSpacing = dp(8)
+                      clipToPadding = false
+                      setPadding(dp(4), dp(8), dp(4), dp(8))
+                      selector = GradientDrawable().apply {
+                          setColor(Color.parseColor("#22FFFFFF"))
+                          setStroke(dp(3), Color.parseColor(RED))
+                          cornerRadius = dp(18).toFloat()
+                      }
+                      setDrawSelectorOnTop(false)
+                      isFocusable = true
+                      setAdapter(this@MainActivity.adapter)
+                      setOnItemClickListener { _, _, pos, _ -> start(apps[pos].intent) }
+                      // Tahan OK: info app (nonaktifkan / uninstall)
+                      setOnItemLongClickListener { _, _, pos, _ ->
+                          val pkg = apps[pos].pkg
+                          if (pkg != null) {
+                              start(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$pkg")))
+                          }
+                          true
+                      }
+                  }
+                  right.addView(grid, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+                  right.addView(mono("TAHAN OK = INFO / NONAKTIFKAN / UNINSTALL", 11f, "#5A5A5A"))
+                  root.addView(right, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f))
+
+                  setContentView(root)
+                  grid.requestFocus()
+                  tick()
+                  loadApps()
+              }
+
+              override fun onNewIntent(intent: Intent?) {
+                  super.onNewIntent(intent)
+                  grid.setSelection(0)
+              }
+
+              override fun onStart() {
+                  super.onStart()
+                  registerReceiver(pkgReceiver, IntentFilter().apply {
+                      addAction(Intent.ACTION_PACKAGE_ADDED)
+                      addAction(Intent.ACTION_PACKAGE_REMOVED)
+                      addDataScheme("package")
+                  })
+                  registerReceiver(timeReceiver, IntentFilter().apply {
+                      addAction(Intent.ACTION_TIME_TICK)
+                      addAction(Intent.ACTION_TIME_CHANGED)
+                      addAction(Intent.ACTION_TIMEZONE_CHANGED)
+                  })
+                  tick()
+              }
+
+              override fun onStop() {
+                  super.onStop()
+                  try { unregisterReceiver(pkgReceiver) } catch (_: Exception) {}
+                  try { unregisterReceiver(timeReceiver) } catch (_: Exception) {}
+              }
+
+              override fun onBackPressed() {}
+
+              private fun tick() {
+                  val cal = Calendar.getInstance()
+                  clock.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE))
+                  dateTv.text = SimpleDateFormat("EEE d MMM", Locale.getDefault()).format(cal.time).uppercase()
+                  val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                  val mi = ActivityManager.MemoryInfo()
+                  am.getMemoryInfo(mi)
+                  fun gb(b: Long) = String.format(Locale.US, "%.1f", b / 1073741824.0)
+                  ramTv.text = "RAM ${gb(mi.totalMem - mi.availMem)} / ${gb(mi.totalMem)} GB"
+              }
+
+              private fun start(i: Intent) {
+                  try {
+                      i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                      startActivity(i)
+                  } catch (e: Exception) {
+                      Toast.makeText(this, "Aplikasi tidak bisa dibuka", Toast.LENGTH_SHORT).show()
+                  }
+              }
+
+              private fun loadApps() {
+                  if (loading) return
+                  loading = true
+                  Thread {
+                      val pm = packageManager
+                      val tvPkgs = HashSet<String>()
+                      val tv = ArrayList<AppItem>()
+                      val other = ArrayList<AppItem>()
+
+                      fun collect(cat: String, into: MutableList<AppItem>, skip: Set<String>?) {
+                          val q = Intent(Intent.ACTION_MAIN).addCategory(cat)
+                          for (ri in pm.queryIntentActivities(q, 0)) {
+                              val ai = ri.activityInfo
+                              if (ai.packageName == packageName) continue
+                              if (skip != null && ai.packageName in skip) continue
+                              val cn = ComponentName(ai.packageName, ai.name)
+                              into.add(
+                                  AppItem(
+                                      ri.loadLabel(pm).toString(), ri.loadIcon(pm),
+                                      Intent(Intent.ACTION_MAIN).addCategory(cat).setComponent(cn),
+                                      ai.packageName
+                                  )
+                              )
+                          }
+                      }
+                      collect(Intent.CATEGORY_LEANBACK_LAUNCHER, tv, null)
+                      tv.forEach { tvPkgs.add(it.pkg!!) }
+                      collect(Intent.CATEGORY_LAUNCHER, other, tvPkgs)
+
+                      val list = ArrayList<AppItem>()
+                      val sIntent = Intent(Settings.ACTION_SETTINGS)
+                      val sIcon = pm.resolveActivity(sIntent, 0)?.loadIcon(pm) ?: pm.defaultActivityIcon
+                      list.add(AppItem("Setelan", sIcon, sIntent, null))
+                      list.addAll(tv.sortedBy { it.label.lowercase() })
+                      list.addAll(other.sortedBy { it.label.lowercase() })
+
+                      ui.post {
+                          apps.clear(); apps.addAll(list)
+                          adapter.notifyDataSetChanged()
+                          loading = false
+                      }
+                  }.start()
+              }
+
+              private inner class AppAdapter : BaseAdapter() {
+                  override fun getCount() = apps.size
+                  override fun getItem(p: Int) = apps[p]
+                  override fun getItemId(p: Int) = p.toLong()
+                  override fun getView(p: Int, cv: View?, parent: ViewGroup): View {
+                      val v = cv ?: LinearLayout(this@MainActivity).apply {
+                          orientation = LinearLayout.VERTICAL
+                          gravity = Gravity.CENTER_HORIZONTAL
+                          setPadding(dp(6), dp(14), dp(6), dp(10))
+                          addView(ImageView(context).apply {
+                              id = 1
+                              scaleType = ImageView.ScaleType.FIT_CENTER
+                              setPadding(dp(14), dp(14), dp(14), dp(14))
+                              background = GradientDrawable().apply {
+                                  shape = GradientDrawable.OVAL
+                                  setColor(Color.parseColor("#1A1A1A"))
+                              }
+                              colorFilter = monoFilter
+                          }, LinearLayout.LayoutParams(dp(76), dp(76)))
+                          addView(TextView(context).apply {
+                              id = 2
+                              textSize = 12f
+                              typeface = Typeface.MONOSPACE
+                              letterSpacing = 0.05f
+                              setTextColor(Color.parseColor("#D0D0D0"))
+                              gravity = Gravity.CENTER
+                              maxLines = 1
+                              ellipsize = TextUtils.TruncateAt.END
+                              setPadding(0, dp(8), 0, 0)
+                          })
+                      }
+                      val a = apps[p]
+                      v.findViewById<ImageView>(1).setImageDrawable(a.icon)
+                      v.findViewById<TextView>(2).text = a.label.uppercase()
+                      return v
+                  }
+              }
+          }
+          EOF_SRC
+      - name: Build
+        run: gradle assembleRelease --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DotLauncher-apk
+          path: app/build/outputs/apk/release/*.apk
